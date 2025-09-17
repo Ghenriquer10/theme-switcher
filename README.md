@@ -67,19 +67,18 @@ export const theme = [darkTheme, lightTheme];
 No seu `App.tsx`:
 
 ```tsx
-import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components/native';
-import { lightTheme, darkTheme } from './theme';
-import { SafeAreaView, Button, Text } from 'react-native';
+import { theme } from './theme';
+import { useColorScheme } from 'react-native';
 
 export default function App() {
-    const [isDark, setIsDark] = useState(false);
+    const colorScheme = useColorScheme()
+    const currentTheme = theme[colorScheme === dark ? 0 : 1]
 
     return (
-        <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-            <SafeAreaView style={{ flex: 1, backgroundColor: isDark ? darkTheme.background : lightTheme.background, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: isDark ? darkTheme.text : lightTheme.text }}>Tema {isDark ? 'Escuro' : 'Claro'}</Text>
-                <Button title="Trocar Tema" onPress={() => setIsDark(!isDark)} />
+        <ThemeProvider theme={currentTheme}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: currentTheme.background }}>
+                <Home/>
             </SafeAreaView>
         </ThemeProvider>
     );
